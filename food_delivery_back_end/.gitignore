@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+.env
+dist/
+build/
+*.log
+
+# Optional (حسب المشروع)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+.idea/
+.vscode/
+coverage/
