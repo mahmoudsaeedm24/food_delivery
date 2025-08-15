@@ -10,6 +10,7 @@ class UserDataSourceOnline extends UserDataSourceInterface {
 
   UserDataSourceOnline({required Dio dio}) : _dio = dio;
 
+  @override
   Future<Either<Exception, Response>> getUserInfo() async {
     try {
       final res = await _dio.get(Pathes.userPath);
@@ -26,6 +27,7 @@ class UserDataSourceOnline extends UserDataSourceInterface {
     }
   }
 
+  @override
   Future<Either<Exception, Response>> updateUser(
     Map<String, dynamic> updatedUser,
   ) async {

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:frontend/core/services/network_checker.dart';
+import 'package:frontend/core/utils/extensions/context_extension.dart';
 import 'package:frontend/features/home/data/model/category_model.dart';
 import 'package:frontend/features/home/presentation/controllers/get_categories/get_categories_cubit.dart';
 import 'package:frontend/features/home/presentation/views/widgets/category_part/categories_part.dart';
@@ -9,6 +11,7 @@ import 'package:frontend/features/home/presentation/views/widgets/product_part/p
 import 'package:frontend/features/home/presentation/views/widgets/top_part/home_top_widget.dart';
 import 'package:frontend/main.dart';
 
+import '../../../../../core/dependency_injection/di.dart';
 import '../../controllers/get_products/get_all_products_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +22,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with RouteAware {
+  void showSnackBar(BuildContext context) {
+    getIt<NetworkChecker>().connectionStream.listen((isConnected) {
+      !isConnected
+          ? context.snackBar(SnackBar(content: Text("Offline Database")))
+          : null;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware {
     context.read<GetProductsCubit>().getProductsByCategoryId(
       categoryId: CategoryModel.defaultCategory().id!,
     );
+    showSnackBar(context);
   }
 
   @override

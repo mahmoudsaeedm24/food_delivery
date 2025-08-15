@@ -4,7 +4,7 @@ import 'package:frontend/core/utils/repo_helper/convert_json_to_list.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/components/data/models/product/product_model.dart';
-import '../../../../core/utils/network/network_checker.dart';
+import '../../../../core/services/network_checker.dart';
 
 class GetRecommendedProductsRepo {
   final ProductDataSourceOnline _productDataSource;

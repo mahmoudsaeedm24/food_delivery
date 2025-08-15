@@ -78,7 +78,7 @@ class _UserPersonImgState extends State<UserPersonImg> {
               // picker.pickImage(source: ImageSource.gallery,);
             },
 
-            child: ImageViewer(widget: widget),
+            child: ImageViewer(),
           );
         },
       ),
@@ -87,9 +87,9 @@ class _UserPersonImgState extends State<UserPersonImg> {
 }
 
 class ImageViewer extends StatelessWidget {
-  const ImageViewer({super.key, required this.widget});
+  const ImageViewer({super.key});
 
-  final UserPersonImg widget;
+  // final UserPersonImg widget;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,7 @@ class ImageViewer extends StatelessWidget {
                 radius: 80,
                 backgroundImage: FileImage(File(imagePath)),
                 backgroundColor: Colors.white,
-                child: Icon(Icons.person, size: 20),
+                child: Image.asset(imagePath),
               );
             },
           ),

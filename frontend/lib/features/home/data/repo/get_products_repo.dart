@@ -5,7 +5,7 @@ import 'package:frontend/features/home/data/model/category_model.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/components/data/models/product/product_model.dart';
-import '../../../../core/utils/network/network_checker.dart';
+import '../../../../core/services/network_checker.dart';
 
 class GetProductsRepo {
   final ProductDataSourceOnline _productDataSourceOnline;

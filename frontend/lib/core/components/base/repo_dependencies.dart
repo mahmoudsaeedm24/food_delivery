@@ -1,4 +1,4 @@
-import 'package:frontend/core/utils/network/network_checker.dart';
+import 'package:frontend/core/services/network_checker.dart';
 
 class RepoDependencies<OnlineDataBase, LocalDataBase> {
   final OnlineDataBase online;

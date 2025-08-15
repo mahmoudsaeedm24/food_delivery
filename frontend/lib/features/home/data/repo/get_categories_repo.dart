@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:frontend/core/components/data/data_sources/category_data_source/category_data_source_local.dart';
 import 'package:frontend/core/components/data/data_sources/category_data_source/category_data_source_online.dart';
-import 'package:frontend/core/utils/network/network_checker.dart';
+import 'package:frontend/core/services/network_checker.dart';
 import 'package:frontend/core/utils/repo_helper/convert_json_to_list.dart';
 import 'package:fpdart/fpdart.dart';
 

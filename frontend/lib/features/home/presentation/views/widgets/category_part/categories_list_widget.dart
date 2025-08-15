@@ -29,6 +29,7 @@ class _CategoriesListWidgetState extends State<CategoriesListWidget> {
             return Container();
           case GetCategoriesSuccess(categories: var categoriesList):
             {
+              
               return SizedBox(
                 // color: Colors.blue,
                 width: MediaQuery.sizeOf(context).width - 10,

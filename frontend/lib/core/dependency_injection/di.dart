@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:frontend/core/components/base/repo_dependencies.dart';
 import 'package:frontend/core/components/cubit/user_cubit.dart';
@@ -12,7 +13,7 @@ import 'package:frontend/core/components/data/models/product/product_model.dart'
 import 'package:frontend/core/components/data/repos/user_repo.dart';
 import 'package:frontend/core/utils/hive_utils/hive_prepare.dart';
 import 'package:frontend/core/utils/network/dio/dio_helper.dart';
-import 'package:frontend/core/utils/network/network_checker.dart';
+import 'package:frontend/core/services/network_checker.dart';
 import 'package:frontend/features/auth/data/auth_repo.dart';
 import 'package:frontend/features/auth/data/data_source/auth_data_source.dart';
 import 'package:frontend/features/auth/sign_up/presentation/controllers/cubit/sign_up_cubit.dart';
@@ -23,7 +24,6 @@ import 'package:frontend/features/home/data/repo/get_categories_repo.dart';
 import 'package:frontend/features/home/data/repo/get_products_repo.dart';
 import 'package:frontend/features/home/presentation/controllers/get_categories/get_categories_cubit.dart';
 import 'package:frontend/features/home/presentation/controllers/get_products/get_all_products_cubit.dart';
-import 'package:frontend/features/personal_data/presentation/controllers/cubit/image_change_cubit.dart';
 import 'package:frontend/features/product_details/data/repo/get_recommended_products_repo.dart';
 import 'package:frontend/features/product_details/presentaion/views/controllers/get_recommended_products/get_recommended_products_cubit.dart';
 import 'package:frontend/features/search/data/get_filter_products_repo.dart';
@@ -47,7 +47,9 @@ void init() {
 }
 
 void _initNetworkChecker() {
-  getIt.registerLazySingleton<NetworkChecker>(() => NetworkChecker());
+  getIt.registerLazySingleton<NetworkChecker>(
+    () => NetworkChecker(connectivity: Connectivity(), dio: getIt<Dio>()),
+  );
 }
 
 void _initDio() {
