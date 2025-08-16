@@ -6,7 +6,9 @@ import 'package:frontend/features/personal_data/data/update_user_repo.dart';
 part 'update_user_state.dart';
 
 class UpdateUserCubit extends Cubit<UpdateUserState> {
-  UpdateUserCubit(this._repo) : super(UpdateUserInitial());
+  UpdateUserCubit({required UpdateUserRepo repo})
+    : _repo = repo,
+      super(UpdateUserInitial());
   final UpdateUserRepo _repo;
 
   Future<void> updateUser({required UserModel userModel}) async {

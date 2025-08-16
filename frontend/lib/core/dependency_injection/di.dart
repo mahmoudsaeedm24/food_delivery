@@ -24,6 +24,7 @@ import 'package:frontend/features/home/data/repo/get_categories_repo.dart';
 import 'package:frontend/features/home/data/repo/get_products_repo.dart';
 import 'package:frontend/features/home/presentation/controllers/get_categories/get_categories_cubit.dart';
 import 'package:frontend/features/home/presentation/controllers/get_products/get_all_products_cubit.dart';
+import 'package:frontend/features/personal_data/data/update_user_repo.dart';
 import 'package:frontend/features/product_details/data/repo/get_recommended_products_repo.dart';
 import 'package:frontend/features/product_details/presentaion/views/controllers/get_recommended_products/get_recommended_products_cubit.dart';
 import 'package:frontend/features/search/data/get_filter_products_repo.dart';
@@ -33,6 +34,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../features/auth/login/presentation/controller/cubit/login_cubit.dart';
 import '../../features/cart/data/repo/cart_repo.dart';
+import '../../features/personal_data/presentation/controllers/update_user_cubit/update_user_cubit.dart';
 import '../utils/network/dio/api_constants.dart';
 
 final getIt = GetIt.I;
@@ -54,7 +56,7 @@ void _initNetworkChecker() {
 
 void _initDio() {
   BaseOptions options = BaseOptions(
-    baseUrl: ApiConstants.baseUrl,
+    baseUrl: ApiConstants.uri,
     receiveTimeout: Duration(seconds: 5),
     sendTimeout: Duration(seconds: 5),
     contentType: ApiConstants.contentType,
@@ -82,7 +84,9 @@ void _initLocalDataSource() {
 
 void _initOnlineDataSource() {
   if (!getIt.isRegistered<AuthDataSource>()) {
-    getIt.registerLazySingleton<AuthDataSource>(() => AuthDataSource());
+    getIt.registerLazySingleton<AuthDataSource>(
+      () => AuthDataSource(dio: getIt<Dio>()),
+    );
   }
 
   if (!getIt.isRegistered<CategoryDataSourceOnline>()) {
@@ -174,6 +178,10 @@ void _initRepos() {
       networkChecker: getIt<NetworkChecker>(),
     ),
   );
+
+  getIt.registerLazySingleton<UpdateUserRepo>(
+    () => UpdateUserRepo(online: getIt<UserDataSourceOnline>()),
+  );
 }
 
 void _initCubits() {
@@ -200,5 +208,9 @@ void _initCubits() {
 
   getIt.registerFactory<GetFilterProductsCubit>(
     () => GetFilterProductsCubit(getIt<GetFilterProductsRepo>()),
+  );
+
+  getIt.registerFactory<UpdateUserCubit>(
+    () => UpdateUserCubit(repo: getIt<UpdateUserRepo>()),
   );
 }

@@ -1,5 +1,6 @@
 abstract class ApiConstants {
-  static const String baseUrl = 'http://192.168.1.9:3000/api';
+  static const String baseUrl = "192.168.1.9";
+  static const String uri = 'http://$baseUrl:3000/api';
   static const String contentType = 'application/json';
 }
 

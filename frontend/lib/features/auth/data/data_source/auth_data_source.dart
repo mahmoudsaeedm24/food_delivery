@@ -4,18 +4,10 @@ import 'package:frontend/core/utils/network/dio/api_constants.dart';
 import 'package:fpdart/fpdart.dart';
 
 class AuthDataSource {
-  late Dio _dio;
-  AuthDataSource() {
-    BaseOptions options = BaseOptions(
-      baseUrl: ApiConstants.baseUrl,
-      contentType: ApiConstants.contentType,
-      receiveTimeout: Duration(seconds: 5),
-      sendTimeout: Duration(seconds: 5),
-      connectTimeout: Duration(seconds: 5),
-    );
+  final Dio _dio;
 
-    _dio = Dio(options);
-  }
+  AuthDataSource({required Dio dio}) : _dio = dio;
+  
 
   Future<Either<Exception, Response>> login(Map userJson) async {
     try {

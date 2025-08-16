@@ -3,14 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/core/components/cubit/user_cubit.dart';
 import 'package:frontend/core/dependency_injection/di.dart' as di;
 import 'package:frontend/core/observers/cubit_observer.dart';
-import 'package:frontend/core/services/network_checker.dart';
-import 'package:frontend/core/utils/extensions/context_extension.dart';
 import 'package:frontend/core/utils/hive_utils/hive_prepare.dart';
 import 'package:frontend/core/utils/router.dart';
 import 'package:frontend/features/cart/presentation/controllers/cubit/cart_models_cubit.dart';
 import 'package:frontend/features/home/presentation/controllers/get_categories/get_categories_cubit.dart';
 import 'package:frontend/features/home/presentation/controllers/get_products/get_all_products_cubit.dart';
-import 'package:get_it/get_it.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 void main() async {
@@ -29,7 +26,6 @@ class MyApp extends StatelessWidget {
   //   final per = await Permissions.checkLocationPermission(context);
   //   // log("per $per");
   // }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +45,7 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return MaterialApp(
-            theme: ThemeData.dark(),
+            // theme: ThemeData.dark(),
             onGenerateRoute: onGenerateRoute,
             // home: Scaffold(
             //   appBar: AppBar(),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/core/components/data/models/user/user_model.dart';
+import 'package:frontend/core/constants.dart';
 import 'package:frontend/core/theme/colors.dart';
 import 'package:frontend/features/personal_data/presentation/controllers/cubit/image_change_cubit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,63 +25,68 @@ class _UserPersonImgState extends State<UserPersonImg> {
   @override
   void initState() {
     super.initState();
-    imagePath = widget.userModel.img ?? "assets/images/mystery.png";
+    imagePath = widget.userModel.img;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ImageChangeCubit>(
-      create: (context) => ImageChangeCubit(imagePath: imagePath),
-      child: Builder(
-        builder: (context) {
-          return InkWell(
-            onTap: () {
-              ImagePicker picker = ImagePicker();
-              final cubit = context.read<ImageChangeCubit>();
-              showBottomSheet(
-                backgroundColor: MyColors.primaryColor,
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          onTap: () {
+            ImagePicker picker = ImagePicker();
+            final cubit = context.read<ImageChangeCubit>();
+            showBottomSheetImageSource(context, cubit, picker);
+            // picker.pickImage(source: ImageSource.gallery,);
+          },
 
-                context: context,
-                builder: (context) => BlocProvider.value(
-                  value: cubit,
-                  child: BottomSheet(
-                    backgroundColor: MyColors.primaryColor,
-                    showDragHandle: false,
-                    enableDrag: false,
-                    onClosing: () {},
-                    builder: (context) {
-                      return SizedBox(
-                        height: 100,
-                        child: Row(
-                          // mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          spacing: 20,
-                          children: [
-                            MyChoice(
-                              picker: picker,
-                              choiceName: "Gallery",
-                              icon: Icons.image,
-                              source: ImageSource.gallery,
-                            ),
-                            MyChoice(
-                              picker: picker,
-                              source: ImageSource.camera,
-                              icon: Icons.camera_alt,
-                              choiceName: "Camera",
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+          child: ImageViewer(),
+        );
+      },
+    );
+  }
+
+  void showBottomSheetImageSource(
+    BuildContext context,
+    ImageChangeCubit cubit,
+    ImagePicker picker,
+  ) {
+    showBottomSheet(
+      backgroundColor: MyColors.primaryColor,
+
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: cubit,
+        child: BottomSheet(
+          backgroundColor: MyColors.primaryColor,
+          showDragHandle: false,
+          enableDrag: false,
+          onClosing: () {},
+          builder: (context) {
+            return SizedBox(
+              height: 100,
+              child: Row(
+                // mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                spacing: 20,
+                children: [
+                  ImageSourceChoice(
+                    picker: picker,
+                    choiceName: "Gallery",
+                    icon: Icons.image,
+                    source: ImageSource.gallery,
                   ),
-                ),
-              );
-              // picker.pickImage(source: ImageSource.gallery,);
-            },
-
-            child: ImageViewer(),
-          );
-        },
+                  ImageSourceChoice(
+                    picker: picker,
+                    source: ImageSource.camera,
+                    icon: Icons.camera_alt,
+                    choiceName: "Camera",
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -102,9 +108,10 @@ class ImageViewer extends StatelessWidget {
             builder: (context, imagePath) {
               return CircleAvatar(
                 radius: 80,
-                backgroundImage: FileImage(File(imagePath)),
-                backgroundColor: Colors.white,
-                child: Image.asset(imagePath),
+                backgroundImage: imagePath == Constants.ignoreImage
+                    ? AssetImage(imagePath)
+                    : FileImage(File(imagePath)),
+                backgroundColor: const Color.fromARGB(255, 171, 5, 5),
               );
             },
           ),
@@ -119,8 +126,8 @@ class ImageViewer extends StatelessWidget {
   }
 }
 
-class MyChoice extends StatelessWidget {
-  const MyChoice({
+class ImageSourceChoice extends StatelessWidget {
+  const ImageSourceChoice({
     super.key,
     required this.picker,
     required this.source,
@@ -142,12 +149,16 @@ class MyChoice extends StatelessWidget {
           onPressed: () async {
             final img = await picker.pickImage(source: source);
 
-            final dir = await getApplicationDocumentsDirectory();
-            await img?.saveTo('${dir.path}/saved_image.jpg');
-            // imagePath = img.path;
-            log("image path = ${img?.path}");
             if (img != null) {
-              context.read<ImageChangeCubit>().changeImage(imagePath: img.path);
+              final dir = await getApplicationDocumentsDirectory();
+              final savedPath =
+                  '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+              await img.saveTo(savedPath);
+              // imagePath = img.path;
+              log("image path = ${img.path}");
+              context.read<ImageChangeCubit>().changeImage(
+                imagePath: savedPath,
+              );
             }
           },
           icon: Icon(icon, color: Colors.white),

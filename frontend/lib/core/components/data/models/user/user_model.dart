@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:frontend/core/constants.dart';
 import 'package:frontend/core/utils/keys.dart';
 
 class UserModel extends Equatable {
@@ -14,7 +15,7 @@ class UserModel extends Equatable {
   final String? houseNo;
   final String? city;
   final String? createdAt;
-  final String? img;
+  final String img;
 
   const UserModel({
     this.id,
@@ -26,7 +27,7 @@ class UserModel extends Equatable {
     this.houseNo,
     this.city,
     this.createdAt,
-    this.img,
+    this.img = Constants.ignoreImage,
   });
 
   factory UserModel.mock() {
@@ -94,7 +95,7 @@ class UserModel extends Equatable {
       houseNo: map[ModelKeys.houseNo],
       city: map[ModelKeys.city],
       createdAt: map[ModelKeys.createdAt],
-      img: map[ModelKeys.img],
+      img: map[ModelKeys.img]??Constants.ignoreImage,
     );
   }
 

@@ -11,6 +11,8 @@ class UpdateUserRepo {
   Future<Either<Exception, UserModel>> updateUser({
     required UserModel userModel,
   }) async {
+    //TODO(kaizen) : temp we will save image in local database not online 
+    ///* when we use cloudinary for storing files , then convert it to save it in online db
     final response = await _online.updateUser(userModel.toJson());
 
     return response.map((res) {
